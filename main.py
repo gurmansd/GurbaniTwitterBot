@@ -105,7 +105,7 @@ def tweet_quote():
             test_tweet = quote
             api.update_status(test_tweet)
             time.sleep(interval)
-        except tweepy.error.TweepError:
+        except tweepy.errors.TweepyException as e:
             print("length over")
 
 
