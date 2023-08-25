@@ -14,15 +14,13 @@ client = tweepy.Client(consumer_key=consumer_key,
                        access_token=access_token,
                        access_token_secret=access_token_secret)
 
+quote1 = ''
 def get_quote():
     response = requests.get("https://api.gurbaninow.com/v2/shabad/random")
     json_data = json.loads(response.text)
 
-
-
-#test, delete later
     quote1 = ""
-    line = json_data['shabad'][-1]
+    line = json_data['shabad'][1]
     quote1 += line['line']['gurmukhi']['unicode']
     quote1 += '\n'
     #quote += line['line']['translation']['punjabi']['default']['unicode']
@@ -35,13 +33,17 @@ def get_quote():
     quote1 += str(json_data['shabadinfo']['pageno'])
     return quote1
 
+compquote = 'ੴ'
+quote1 = ''
 
 def tweet_quote():
     interval = 60*60
     
     while True:
         try:
-            quote = get_quote()
+            while compquote not in quote1:
+                quote = get_quote()
+                break
             print('Sending Tweet')
             print('\n')
             print(quote)
@@ -51,6 +53,7 @@ def tweet_quote():
             time.sleep(interval)
         except tweepy.errors.TweepyException as e:
             print("length over")
+
 
 
 if __name__ == "__main__":
